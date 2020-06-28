@@ -31,7 +31,6 @@ function loadQuotes() {
 
               for(var i = allQuotes.length - 1; i >= 0; i--) {
                 createQuote(allQuotes[i].name, allQuotes[i].location, allQuotes[i].category, allQuotes[i].message);
-                console.log("quote created");
               }
               $('#portfolio-flters li:nth-child(1)').click();
           },
@@ -47,6 +46,15 @@ function addQuote() {
   let location = document.getElementById("l").value;
   let message = document.getElementById("m").value;
 
+  console.log(category);
+  console.log(name === "");
+
+  if(name === "" || category === "select" || location === "" || message === "") {
+    document.getElementById("sent-message").innerHTML = "";
+    document.getElementById("error-message").innerHTML = "Please fill out all of the fields";
+    return;
+  }
+
   $.ajax({
           url: '/quotes',
           type: 'POST',
@@ -58,9 +66,11 @@ function addQuote() {
               if(!data.error) {
                   clearFields();
                   document.getElementById("sent-message").innerHTML = data.message;
+                  document.getElementById("error-message").innerHTML = "";
               } else {
                 console.log("error")
                 document.getElementById("error-message").innerHTML = data.message;
+                document.getElementById("sent-message").innerHTML = "";
               }
           },
           error: function(err) {
@@ -73,7 +83,7 @@ loadQuotes();
 
 function createQuote(name, loc, category, message) {
     var portfoliorapdiv = document.createElement("div")
-    console.log(category);
+
     portfoliorapdiv.className = "quote-container" + " col-lg-4 col-md-6 portfolio-item filter-" + category;
 
     var newQuote = document.createElement("div")
