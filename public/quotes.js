@@ -18,25 +18,76 @@ function addQuote() {
     filterSelection(filteredType);
 }
 
-function createQuote() {
+function loadQuotes() {
+
+  $.ajax({
+          url: '/quotes',
+          type: 'GET',
+          data: {},
+          success: function (data) {
+
+            allQuotes = data.data;
+            document.getElementById("folder").innerHTML = "";
+
+              for(var i = allQuotes.length - 1; i >= 0; i--) {
+                createQuote(allQuotes[i].name, allQuotes[i].location, allQuotes[i].category, allQuotes[i].message);
+                console.log("quote created");
+              }
+              $('#portfolio-flters li:nth-child(1)').click();
+          },
+          error: function(err) {
+              console.log(err);
+          }
+      });
+}
+
+function addQuote() {
+  let name = document.getElementById("n").value;
+  let category = document.getElementById("c").value;
+  let location = document.getElementById("l").value;
+  let message = document.getElementById("m").value;
+
+  $.ajax({
+          url: '/quotes',
+          type: 'POST',
+          data: {"name": name, "location": location, "category": category, "message": message},
+          success: function (data) {
+
+            console.log(data);
+              console.log(data.error)
+              if(!data.error) {
+                  clearFields();
+                  document.getElementById("sent-message").innerHTML = data.message;
+              } else {
+                console.log("error")
+                document.getElementById("error-message").innerHTML = data.message;
+              }
+          },
+          error: function(err) {
+              console.log(err);
+          }
+      });
+}
+
+loadQuotes();
+
+function createQuote(name, loc, category, message) {
     var portfoliorapdiv = document.createElement("div")
-    console.log(CATEGORY[CATEGORY.length - 1]);
-    portfoliorapdiv.className = "quote-container" + " col-lg-4 col-md-6 portfolio-item filter-" + CATEGORY[CATEGORY.length - 1];
-    //portfoliorapdiv.id = "filter-" + CATEGORY[CATEGORY.length - 1];
+    console.log(category);
+    portfoliorapdiv.className = "quote-container" + " col-lg-4 col-md-6 portfolio-item filter-" + category;
 
     var newQuote = document.createElement("div")
 
     var quote = document.createElement("p");
-    var quoteText = QUOTE[QUOTE.length - 1];
+    var quoteText = message;
     quote.appendChild(document.createTextNode(quoteText));
     quote.appendChild(document.createElement("br"));
-    var authorText = "-" + NAME[NAME.length - 1] + ", " + LOC[LOC.length - 1];
+    var authorText = "- " + name + ", " + loc;
     quote.appendChild(document.createTextNode(authorText));
     quote.className = "note yellow";
 
     newQuote.appendChild(quote);
 
-    //newQuote.className = "col-lg-4 col-md-6 portfolio-item filter-" + CATEGORY[CATEGORY.length - 1];
     newQuote.style = document.querySelector(".oval-thought");
     newQuote.style.wordWrap = 'break-word';
 
@@ -46,31 +97,6 @@ function createQuote() {
 
 }
 
-/*function createQuote(name, loc, category, quote) {
-    var portfoliorapdiv = document.createElement("div");
-    console.log(category);
-    portfoliorapdiv.className = "quote-container" + " col-lg-4 col-md-6 portfolio-item filter-" + category;
-    //portfoliorapdiv.id = "filter-" + CATEGORY[CATEGORY.length - 1];
-
-    var newQuote = document.createElement("div")
-
-    var quote = document.createElement("p");
-    var quoteText = quote;
-    quote.appendChild(document.createTextNode(quoteText));
-    quote.appendChild(document.createElement("br"));
-    var authorText = "-" + name + ", " + loc;
-    quote.appendChild(document.createTextNode(authorText));
-    quote.className = "note yellow";
-
-    newQuote.appendChild(quote);
-
-    //newQuote.className = "col-lg-4 col-md-6 portfolio-item filter-" + CATEGORY[CATEGORY.length - 1];
-    newQuote.style = document.querySelector(".oval-thought");
-
-    portfoliorapdiv.appendChild(newQuote);
-
-    document.getElementById("folder").appendChild(portfoliorapdiv);
-}*/
 
 function clearFields(){
     document.getElementById("n").value = "";
