@@ -12,9 +12,9 @@ app.set('view engine', 'ejs');
 const mysql = require("mysql");
 
 var connection = mysql.createConnection({
-  host: "thinkpos-db.cpfgsfmpsgzi.us-east-1.rds.amazonaws.com",
+  host: process.env.HOST,
   user: "admin",
-  password: "password",
+  password: process.env.PASSWORD,
   port: "3306",
   database: "quotes"
 })
