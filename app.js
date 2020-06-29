@@ -55,10 +55,10 @@ app.post('/quotes', function(req, res) {
 
   //replace quotation marks
   name = name.replace(/"/gi, "'");
-  location = name.replace(/"/gi, "'");
-  date = name.replace(/"/gi, "'");
-  category = name.replace(/"/gi, "'");
-  message = name.replace(/"/gi, "'");
+  location = location.replace(/"/gi, "'");
+  date = date.replace(/"/gi, "'");
+  category = category.replace(/"/gi, "'");
+  message = message.replace(/"/gi, "'");
 
   var sql = "INSERT INTO allquotes (name, location, date, category, message, allowed) VALUES ?";
   var data = [[name, location, date, category, message, false]];
