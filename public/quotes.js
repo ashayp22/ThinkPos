@@ -107,7 +107,6 @@ function createQuote(name, loc, date, category, message) {
 
 function clearFields(){
     document.getElementById("n").value = "";
-    document.getElementById("l").value = "";
     document.getElementById("c").value = "select";
     document.getElementById("m").value = "";
 }
