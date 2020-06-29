@@ -30,7 +30,7 @@ function loadQuotes() {
             document.getElementById("folder").innerHTML = "";
 
               for(var i = allQuotes.length - 1; i >= 0; i--) {
-                createQuote(allQuotes[i].name, allQuotes[i].location, allQuotes[i].category, allQuotes[i].message);
+                createQuote(allQuotes[i].name, allQuotes[i].location, allQuotes[i].date, allQuotes[i].category, allQuotes[i].message);
               }
               $('#portfolio-flters li:nth-child(1)').click();
           },
@@ -45,9 +45,6 @@ function addQuote() {
   let category = document.getElementById("c").value;
   let location = document.getElementById("l").value;
   let message = document.getElementById("m").value;
-
-  console.log(category);
-  console.log(name === "");
 
   if(name === "" || category === "select" || location === "" || message === "") {
     document.getElementById("sent-message").innerHTML = "";
@@ -81,7 +78,7 @@ function addQuote() {
 
 loadQuotes();
 
-function createQuote(name, loc, category, message) {
+function createQuote(name, loc, date, category, message) {
     var portfoliorapdiv = document.createElement("div")
 
     portfoliorapdiv.className = "quote-container" + " col-lg-4 col-md-6 portfolio-item filter-" + category;
@@ -92,7 +89,7 @@ function createQuote(name, loc, category, message) {
     var quoteText = message;
     quote.appendChild(document.createTextNode(quoteText));
     quote.appendChild(document.createElement("br"));
-    var authorText = "- " + name + ", " + loc;
+    var authorText = "- " + name + ", " + loc + ', ' + date;
     quote.appendChild(document.createTextNode(authorText));
     quote.className = "note yellow";
 

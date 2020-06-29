@@ -1,7 +1,8 @@
 const PORT = process.env.PORT || 3000; //either heroku port or local port
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express()
+const app = express();
+var xss = require("xss");
 require('dotenv').config();
 
 app.use(express.static('public'));
@@ -19,40 +20,47 @@ var connection = mysql.createConnection({
   database: "quotes"
 })
 
-// connection.connect(function(err) {
-//   if (err) {
-//     console.log(err);
-//     return;
-//   }
-//   console.log('Connected to database')
-//   var sql = "CREATE TABLE allquotes (name VARCHAR(255), location VARCHAR(255), category VARCHAR(255), message VARCHAR(255))";
-//   connection.query(sql, function (err, result) {
-//     if (err) throw err;
-//     console.log("Table created");
-//   });
-// })
-
-
 app.get('/', function (req, res) { //handles get request
   res.render('index');
 })
 
+function getDate() {
+  var today = new Date();
+  var dd = today.getDate();
+
+  var mm = today.getMonth()+1;
+  var yyyy = today.getFullYear();
+  if(dd<10)
+  {
+      dd='0'+dd;
+    }
+
+  if(mm<10)
+  {
+    mm='0'+mm;
+  }
+
+  return mm+'/'+dd+'/'+yyyy
+}
+
+
 app.post('/quotes', function(req, res) {
   console.log("clicked");
 
-  let name = req.body.name;
-  let location = req.body.location;
-  let category = req.body.category;
-  let message = req.body.message;
+  let name = xss(req.body.name);
+  let location = xss(req.body.location);
+  let date = getDate();
+  let category = xss(req.body.category);
+  let message = xss(req.body.message);
 
-  var sql = "INSERT INTO allquotes (name, location, category, message) VALUES ?";
-  var data = [[name, location, category, message]];
+  var sql = "INSERT INTO allquotes (name, location, date, category, message, allowed) VALUES ?";
+  var data = [[name, location, date, category, message, false]];
   connection.query(sql, [data], function(error, results, fields) {
       if(error) {
         res.json({error: true, message: "There has been an error. Please try again."});
         res.end();
       } else {
-        res.json({error: false, message: "The quote has been added!"});
+        res.json({error: false, message: "The quote has been submitted!"});
         res.end();
       }
   });
@@ -67,7 +75,9 @@ app.get('/quotes', function(req, res) {
       } else {
         data = [];
         for(var i = 0; i < results.length; i++) {
-          data.push({name: results[i].name, location: results[i].location, category: results[i].category, message: results[i].message})
+          if(results[i].allowed) {
+            data.push({name: results[i].name, location: results[i].location, date: results[i].date, category: results[i].category, message: results[i].message})
+          }
         }
         return res.json({data: data});
         res.end();
