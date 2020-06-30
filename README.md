@@ -1,6 +1,6 @@
 # ThinkPos
 
-## Developed by: Ashay Parikh, Skyler Gao, Abhi Nayak
+## Developed by: Abhi Nayak, Skyler Gao, Ashay Parikh
 
 ### Project Details
 
