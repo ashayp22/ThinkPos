@@ -67,7 +67,7 @@ app.post('/quotes', function(req, res) {
         res.json({error: true, message: "There has been an error. Please try again."});
         res.end();
       } else {
-        res.json({error: false, message: "The quote has been submitted!"});
+        res.json({error: false, message: "The quote has been submitted! It will be reviewed and then added to the site."});
         res.end();
       }
   });
