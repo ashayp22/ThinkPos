@@ -10,4 +10,4 @@ Technologies: HTML/CSS, Bootstrap, Node.js, MySQL, Heroku
 
 [Demonstration Video](https://youtu.be/1g4bJ51DBqQ)
 
-[Try it out](https://www.thinkpos.us/)
+[Try it out](http://www.thinkpos.us/)
