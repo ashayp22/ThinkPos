@@ -1,6 +1,6 @@
 # ThinkPos
 
-## Developed by: Ashay Parikh, Skyler Gao, Abhi Nayak
+## Developed by: Abhi Nayak, Skyler Gao, Ashay Parikh
 
 ### Project Details
 
@@ -10,4 +10,4 @@ Technologies: HTML/CSS, Bootstrap, Node.js, MySQL, Heroku
 
 [Demonstration Video](https://youtu.be/1g4bJ51DBqQ)
 
-[Try it out](https://desolate-forest-84389.herokuapp.com/)
+[Try it out](http://www.thinkpos.us/)
