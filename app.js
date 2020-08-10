@@ -20,6 +20,28 @@ var connection = mysql.createConnection({
   database: "quotes"
 })
 
+// connection.connect(function(err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+//   connection.query("CREATE DATABASE quotes", function (err, result) {
+//     if (err) throw err;
+//     console.log("Database created");
+//   });
+// });
+
+// connection.connect(function(err) {
+//   if (err) {
+//     console.log(err);
+//     return;
+//   }
+//   console.log('Connected to database')
+//   var sql = "CREATE TABLE allquotes (name VARCHAR(255), location VARCHAR(255), date VARCHAR(255), category VARCHAR(255), message VARCHAR(255), allowed BOOLEAN)";
+//   connection.query(sql, function (err, result) {
+//     if (err) throw err;
+//     console.log("Table created");
+//   });
+// })
+
 app.get('/', function (req, res) { //handles get request
   res.render('index');
 })
@@ -64,6 +86,7 @@ app.post('/quotes', function(req, res) {
   var data = [[name, location, date, category, message, false]];
   connection.query(sql, [data], function(error, results, fields) {
       if(error) {
+        console.log(error)
         res.json({error: true, message: "There has been an error. Please try again."});
         res.end();
       } else {
@@ -77,8 +100,8 @@ app.get('/quotes', function(req, res) {
   connection.query('SELECT * FROM allquotes', function(error, results, fields) {
 
       if(error) {
+        console.log(error)
         return res.json({data: []});
-        res.end();
       } else {
         data = [];
         for(var i = 0; i < results.length; i++) {
@@ -87,7 +110,6 @@ app.get('/quotes', function(req, res) {
           }
         }
         return res.json({data: data});
-        res.end();
       }
   });
 })
